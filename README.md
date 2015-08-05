@@ -11,18 +11,18 @@ Running Script
 
     python find_email_addresses.py domain_name
 
-By Default, it assumes the given domain is in http.
-To find emails in https domains, use:
-
-    python find_email_addresses.py domain_name https
-
 Example:
 
 	python find_email_addresses.py harigaire.com
+
+By Default, it assumes the given domain is in http. To find emails in https domains, use:
+
+    python find_email_addresses.py domain_name https
 ```
 
 Libraries Required
 ------------------
 
 BeautifulSoup (http://www.crummy.com/software/BeautifulSoup/)
+
 It's included in the above library if you don't want to install it separately.
