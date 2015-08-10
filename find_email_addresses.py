@@ -16,7 +16,7 @@ def main(args):
         sys.exit(1)
 
     d = find_emails.EmailsFromDomain(args.domain, args.protocol, args.maxpages)
-    # d.find_all_emails()
+    d.find_all_emails()
     print d
 
 
