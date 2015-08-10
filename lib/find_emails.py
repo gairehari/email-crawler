@@ -15,6 +15,8 @@ class EmailsFromDomain():
         '''
         self.domain_name = domain_name
         self.https = True if protocol == 'https' else False
+        self.max_pages = max_pages
+
         self.emails = set()
 
         self.url = self.create_full_website_url()
@@ -36,6 +38,9 @@ class EmailsFromDomain():
         else:
             url = 'http://' + url
 
+        if not url.endswith('/'):
+            url += '/'
+
         return url
 
     def find_internal_links(self, url, response_text):
@@ -56,11 +61,12 @@ class EmailsFromDomain():
     def find_all_emails(self):
         '''Method to visit each link and find emails in them
         '''
+        count = 0
         while self.urls:
             url = self.urls.pop()
             self.visited_urls.append(url)
             try:
-                response = urllib2.urlopen(url)
+                response = urllib2.urlopen(url, timeout=10.0)
             except Exception:
                 continue  # URL not accessible
 
@@ -71,6 +77,10 @@ class EmailsFromDomain():
                 self.emails.update(emails)
 
             self.find_internal_links(url, data)
+
+            count += 1
+            if count >= self.max_pages:
+                break
 
     def get_emails(self):
         '''Returns list of emails found

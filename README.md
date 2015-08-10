@@ -15,9 +15,9 @@ Example:
 
 	python find_email_addresses.py harigaire.com
 
-By Default, it assumes the given domain is in http. To find emails in https domains, use:
+By Default, it assumes the given domain has webpages in http. To find emails in https, use:
 
-    python find_email_addresses.py domain_name https
+    python find_email_addresses.py domain_name --protocol https
 ```
 
 Libraries Required
