@@ -10,11 +10,11 @@ from lib.validate import EMAIL_RE
 
 class EmailsFromDomain():
 
-    def __init__(self, domain_name, https):
+    def __init__(self, domain_name, protocol, max_pages):
         '''
         '''
         self.domain_name = domain_name
-        self.https = https
+        self.https = True if protocol == 'https' else False
         self.emails = set()
 
         self.url = self.create_full_website_url()
@@ -61,9 +61,7 @@ class EmailsFromDomain():
             self.visited_urls.append(url)
             try:
                 response = urllib2.urlopen(url)
-            except Exception, e:
-                #print url
-                #print 'Exception fetching url content, %s' % str(e)
+            except Exception:
                 continue  # URL not accessible
 
             data = response.read()

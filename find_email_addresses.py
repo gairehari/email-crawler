@@ -2,34 +2,37 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import argparse
 
-from lib import check_domain, find_emails
+from lib import validate, find_emails
 
 
-def main():
-    '''Main method to read command line arguments and validate them
-       Uses lib.find_emails library to find emails in a domain
+def main(args):
+    '''Validate command line arguments.
+       Use lib.find_emails library to find emails in a domain,
     '''
-    args = sys.argv
-    if len(args) < 2:
-        print "Usage: python find_email_addresses.py valid_domain_name"
-        return
+    if not validate.is_valid_domain(args.domain):
+        print "Domain Name is not valid. Use valid domain name"
+        sys.exit(1)
 
-    domain_name = args[1]
-    if not check_domain.is_valid_domain(domain_name):
-        print "Domain Name is not valid."
-        print "Usage: python find_email_addresses.py valid_domain_name"
-        return
-
-    https = False
-    if len(args) > 2:
-        if args[2].lower() == 'https':
-            https = True
-
-    d = find_emails.EmailsFromDomain(domain_name, https)
-    d.find_all_emails()
+    d = find_emails.EmailsFromDomain(args.domain, args.protocol, args.maxpages)
+    # d.find_all_emails()
     print d
 
 
 if __name__ == "__main__":
-    main()
+    '''
+    '''
+    parser = argparse.ArgumentParser(description='Crawl emails \
+                                     from a given domain.')
+
+    parser.add_argument('domain',
+                        help='domain name to fetch emails from')
+    parser.add_argument('--protocol', default='http',
+                        help='http/https')
+    parser.add_argument('--maxpages', type=int, default=10,
+                        help='maximum pages to be crawled')
+
+    args = parser.parse_args()
+
+    main(args)
